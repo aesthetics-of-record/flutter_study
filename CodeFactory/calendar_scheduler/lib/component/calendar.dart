@@ -2,16 +2,19 @@ import 'package:calendar_scheduler/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+// statelessWidget로 바꾸면, widget.~를 빼도된다.
+// widget.xx는 statewidget에서 받아온 변수를 사용해야 하는데, 클래스가 다르기 때문에 쓰는거다.
+class Calendar extends StatelessWidget {
+  final DateTime? selectedDay;
+  final DateTime focusedDay;
+  final OnDaySelected? onDaySelected;
 
-  @override
-  State<Calendar> createState() => _CalendarState();
-}
-
-class _CalendarState extends State<Calendar> {
-  DateTime? selectedDay;
-  DateTime focusedDay = DateTime.now();
+  Calendar({
+    required this.selectedDay,
+    required this.focusedDay,
+    required this.onDaySelected,
+    super.key,
+  });
 
   final defaultBoxDeco = BoxDecoration(
     borderRadius: BorderRadius.circular(6.0),
@@ -57,14 +60,7 @@ class _CalendarState extends State<Calendar> {
           outsideDecoration: const BoxDecoration(
             shape: BoxShape.rectangle,
           )),
-      onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
-        setState(
-          () {
-            this.selectedDay = selectedDay;
-            this.focusedDay = selectedDay;
-          },
-        );
-      },
+      onDaySelected: onDaySelected,
       selectedDayPredicate: (DateTime date) {
         if (selectedDay == null) {
           return false;
